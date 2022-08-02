@@ -1,0 +1,47 @@
+---
+title: "Smart Phone Descriptive Analysis"
+output: html_notebook
+---
+```{r warning=FALSE, echo=FALSE,message=FALSE}
+library(tidyverse)
+library(dplyr)
+```
+
+```{r warning=FALSE, echo=FALSE,message=FALSE, results='hide'}
+phone_data<- read.csv("smartphone_customer_data.csv")
+head(phone_data)
+```
+
+## Question 1
+```{r warning=FALSE, echo=FALSE,message=FALSE}
+chat_minutes <- phone_data%>%
+  filter(brand=="samsung",size_cat == "s", years_ago==1)%>%
+  summarise(Average_Chat_Minutes = mean(chat))
+chat_minutes
+```
+
+
+## Question 2
+```{r warning=FALSE, echo=FALSE,message=FALSE}
+categories <- phone_data%>%
+  group_by(size_cat, brand,years_ago)%>%
+  summarise(Count = n())%>%
+  arrange(desc(Count))
+categories
+```
+Answer = 261
+
+
+## Question 3
+```{r warning=FALSE, echo=FALSE,message=FALSE}
+discounted <- phone_data%>%
+  filter(discount== "")%>%
+  summarise(A=n())
+
+customer_discount <- phone_data%>%
+  filter(discount==phone_id)%>%
+  summarise(B=n())
+
+discounted$A>customer_discount$B
+
+```
